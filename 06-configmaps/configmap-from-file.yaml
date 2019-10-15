@@ -1,0 +1,14 @@
+apiVersion: v1
+data:
+  .properties: |-
+    ## this is a test file
+    ## do not edit
+    java=10
+  .config: |-
+    # some config
+    # test file
+  country: SL
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: file-config
