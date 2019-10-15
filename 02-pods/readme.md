@@ -14,3 +14,4 @@ kubectl get pods --all-namespaces
 kubectl delete pod nginx -n dialog
 kubectl run nginx --image nginx --restart=Never --port 80 -n dialog --dry-run -o yaml > nginx-pod.yaml
 kubectl explain Pod.spec.containers.ports
+kubectl apply -f nginx-pod.yaml 
