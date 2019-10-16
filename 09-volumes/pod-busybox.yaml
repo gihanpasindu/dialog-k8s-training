@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: busybox
+  name: busybox
+spec:
+  initContainers:
+  - image: busybox
+    name: pre-run
+    command: 
+    - /bin/sh
+    - -c
+    - "mkdir -p /app && touch /app/date.txt"
+    volumeMounts:
+    - name: shared-folder
+      mountPath: /app
+  containers:
+  - image: busybox
+    name: main-app
+    command: 
+    - /bin/sh
+    - -c
+    - 'i=0; while true; do echo "$i: $(date)" >> /app/date.txt; i=$((i+1)); sleep 1; done'
+    volumeMounts:
+    - name: shared-folder
+      mountPath: /app
+  - image: busybox
+    name: log-stream
+    command: 
+    - /bin/sh
+    - -c
+    - 'tail -f /app/date.txt'
+    volumeMounts:
+    - name: shared-folder
+      mountPath: /app 
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+  volumes:
+  - name: shared-folder
+    emptyDir: {}
+status: {}
