@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nextcloud
+  name: nextcloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: nextcloud
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: nextcloud
+    spec:
+      containers:
+      - image: nextcloud
+        name: nextcloud
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: html
+          mountPath: /var/www/html
+        - name: db
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: html
+        persistentVolumeClaim:
+          claimName: html
+      - name: db
+        persistentVolumeClaim:
+          claimName: db
+status: {}

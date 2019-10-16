@@ -8,3 +8,13 @@ Make sure the deployment only has 1 replica
 expose the deployment as a service. 
 
 Save up all the yamls
+
+
+
+Solution:
+
+kubectl run nextcloud --image nextcloud --port 80 -o yaml --dry-run > deployment-nextcloud.yaml
+
+kubectl expose deploy/nextcloud --port 80 --target-port 80 --type ClusterIP --dry-run -o yaml > service-nextcloud.yaml
+
+kubectl port-forward svc/nextcloud 8080:80
