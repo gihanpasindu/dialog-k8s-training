@@ -1,0 +1,58 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nextcloud-sts
+spec:
+  ports:
+  - port: 80
+    name: web
+  clusterIP: None
+  selector:
+    app: nextcloud-sts
+---
+apiVersion: apps/v1 
+kind: StatefulSet
+metadata:
+  name: nextcloud-sts
+  labels:
+    app: nextcloud-sts
+spec:
+  serviceName: "nextcloud-sts"
+  selector:
+    matchLabels:
+      app: nextcloud-sts
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: nextcloud-sts
+    spec:
+      containers:
+      - name: nextcloud
+        image: nextcloud
+        ports:
+        - containerPort: 80
+          name: web
+        volumeMounts:
+        - name: web-sts
+          mountPath: /var/www/html
+        - name: mysql-sts
+          mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+  - metadata:
+      name: web-sts
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+      storageClassName: standard
+  - metadata:
+      name: mysql-sts
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+      storageClassName: standard

@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  creationTimestamp: null
+  labels:
+    run: pi
+  name: pi
+spec:
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: pi
+    spec:
+      containers:
+      - image: perl
+        name: pi
+        command: ["perl", "-Mbignum=bpi", "-wle", "'print bpi(2000)'"]
+        resources: {}
+      restartPolicy: OnFailure
+status: {}
