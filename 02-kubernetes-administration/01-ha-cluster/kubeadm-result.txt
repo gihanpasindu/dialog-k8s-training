@@ -1,0 +1,18 @@
+Your Kubernetes control-plane has initialized successfully!
+To start using your cluster, you need to run the following as a regular user:
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+  You can now join any number of the control-plane node running the following command on each as root:
+  
+  kubeadm join dialog-lb.c.platformer-november.internal:6443 --token v9g08r.nyl0wa98ixnklsla \
+    --discovery-token-ca-cert-hash sha256:b20ef0ccc049ff911a8cadcefb65f55806a34b7b3daf22d5225427612699589e \
+    --control-plane --certificate-key f64f93561a731d3e4220b20e787cd24a194b115571340ac4511cb22666a27344
+
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join dialog-lb.c.platformer-november.internal:6443 --token v9g08r.nyl0wa98ixnklsla \
+    --discovery-token-ca-cert-hash sha256:b20ef0ccc049ff911a8cadcefb65f55806a34b7b3daf22d5225427612699589e 

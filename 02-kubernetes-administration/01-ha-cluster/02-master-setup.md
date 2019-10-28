@@ -36,3 +36,14 @@ EOF
 copy kubeadm-config.yaml to a file called kubeadm-config.yaml in your first master
 
 ```kubeadm init --config kubeadm-config.yaml --upload-certs```
+
+
+### Reupload master join certificates
+
+Certificates expire after 2 hours
+```kubeadm init phase upload-certs --upload-certs```
+
+### Regenerate node join tokens
+
+node Join tokens expire after 2 hours
+```kubeadm token create --print-join-command```
