@@ -14,6 +14,14 @@ Enable stats port
 ```
 sudo semanage port --add --type http_port_t --proto tcp 7000
 firewall-cmd --permanent --add-port=7000/tcp
+
+```
+
+Enable kubernetes api port
+
+```
+sudo semanage port --add --type http_port_t --proto tcp 6443
+firewall-cmd --permanent --add-port=6443/tcp
 ```
 
 ```
@@ -22,4 +30,3 @@ systemctl start haproxy
 systemctl status haproxy
 ```
 
- 
