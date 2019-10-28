@@ -18,8 +18,8 @@ firewall-cmd --permanent --add-port=30000-32767/tcp
 ```systemctl restart firewalld```
 
  
- ## Create Default Audit Policy
-
+ ### Create Default Audit Policy
+```
 mkdir -p /etc/kubernetes
 cat > /etc/kubernetes/audit-policy.yaml <<EOF
 apiVersion: audit.k8s.io/v1beta1
@@ -27,6 +27,12 @@ kind: Policy
 rules:
 - level: Metadata
 EOF
+```
 
-# folder to save audit logs
-mkdir -p /var/log/kubernetes/audit
+```mkdir -p /var/log/kubernetes/audit```
+
+### setup the initial master
+
+copy kubeadm-config.yaml to a file called kubeadm-config.yaml in your first master
+
+```kubeadm init --config kubeadm-config.yaml --upload-certs```
