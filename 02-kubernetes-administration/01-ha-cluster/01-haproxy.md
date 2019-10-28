@@ -11,4 +11,15 @@ test if the config is okay
 
 Enable stats port
 
-```sudo semanage port --add --type http_port_t --proto tcp 7000```
+```
+sudo semanage port --add --type http_port_t --proto tcp 7000
+firewall-cmd --permanent --add-port=7000/tcp
+```
+
+```
+systemctl enable haproxy
+systemctl start haproxy
+systemctl status haproxy
+```
+
+ 
