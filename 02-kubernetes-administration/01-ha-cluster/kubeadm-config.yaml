@@ -1,12 +1,12 @@
 apiVersion: kubeadm.k8s.io/v1beta1
 kind: ClusterConfiguration
-kubernetesVersion: 1.16.2
+kubernetesVersion: <kubernetes-version>
 apiServer:
   certSANs:
   - 127.0.0.1
-  - dialog-lb.c.platformer-november.internal
-  - 162.222.176.22
-  - dialog.kubernetes.lk
+  - <loadbalancer_internal_ip>
+  - <loadbalancer_external_ip>
+  - <loadbalancer_subdomain> 
   extraArgs:
     authorization-mode: Node,RBAC
     feature-gates: "TTLAfterFinished=true"
