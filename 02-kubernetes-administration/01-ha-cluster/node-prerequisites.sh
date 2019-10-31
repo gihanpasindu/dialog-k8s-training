@@ -76,3 +76,7 @@ systemctl restart kubelet
 
 # Install nfs utils for Kubernetes NFS driver
 yum -y install nfs-utils
+
+# install iscsii driver to enable contaienr attached storage
+yum install iscsi-initiator-utils -y
+systemctl enable iscsid && sudo systemctl start iscsid

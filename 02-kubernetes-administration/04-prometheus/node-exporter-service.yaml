@@ -1,0 +1,43 @@
+kind: Service
+apiVersion: v1
+metadata:
+ name: lb-server-metrics
+ labels:
+   app: lb-server-metrics
+ namespace: monitoring
+spec:
+ type: ClusterIP
+ ports:
+ - port: 9100
+   targetPort: 9100
+   name: metrics
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+ name: lb-server-metrics
+ labels:
+   app: lb-server-metrics
+ namespace: monitoring
+subsets:
+ - addresses:
+     - ip: 35.224.67.239
+   ports:
+     - port: 9100
+       name: metrics 
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: lb-server-metrics
+  labels:
+    app: lb-server-metrics
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+       app: lb-server-metrics
+  endpoints:
+  - interval: 30s
+    port: metrics
+  jobLabel: jobLabel

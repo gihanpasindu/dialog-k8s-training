@@ -1,0 +1,24 @@
+global: 
+  resolve_timeout: 5m
+  smtp_require_tls: false
+  smtp_smarthost: ""
+  smtp_from: ""
+  smtp_auth_username: ""
+  smtp_auth_identity: ""
+  smtp_auth_password: ""
+route: 
+  receiver: all
+  repeat_interval: 10h
+  routes:
+  - match_re:
+      alertname: Watchdog
+    receiver: 'testing'
+    repeat_interval: 12h
+    continue: true
+receivers:
+- name: 'all'
+  webhook_configs:
+  - url: http://prom2googlechat.monitoring.svc.cluster.local:3000/
+    send_resolved: true
+templates:
+- '*.tmpl'

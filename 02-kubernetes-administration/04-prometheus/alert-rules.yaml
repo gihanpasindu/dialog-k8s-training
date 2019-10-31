@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    prometheus: k8s
+    role: nginx-rules
+  name: node-exporter-rules
+  namespace: monitoring
+spec:
+  groups:
+  - name: lb-metrics
+    rules:
+    - alert: LBDown
+      annotations:
+        message: 'LB has gone down'
+        runbook_url: https://github.com/kubernetes-monitoring/kubernetes-mixin/tree/master/runbook.md#alert-name-cputhrottlinghigh
+      expr: 'absent(up{job="lb-server-metrics", service="lb-server-metrics"})'
+      for: 10m
+      labels:
+        severity: critical
