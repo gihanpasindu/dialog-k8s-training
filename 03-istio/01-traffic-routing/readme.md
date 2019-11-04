@@ -31,3 +31,6 @@ kubectl run busybox --image busybox:1.27 --restart Never -it -- /bin/sh
 wget -O- nginx-svc.dialog.svc
 
 VirtualService ---> DestinationRule ---> Service ---> Pods
+
+wget -O- --header='user-agent: Safari' nginx-svc.dialog.svc
+
