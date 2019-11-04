@@ -13,4 +13,6 @@ kubectl get namespace -L istio-injection
 
 ```
 kubectl run nginx-v1 --image nj93/istio-test-svc:v1 --dry-run -o yaml --port 80 --labels 'version=v1,app=nginx' -n dialog > nginx-v1-deployment.yaml
+
+kubectl run nginx-v2 --image nj93/istio-test-svc:v2 --dry-run -o yaml --port 80 --labels 'version=v2,app=nginx' -n dialog > nginx-v2-deployment.yaml
 ```
