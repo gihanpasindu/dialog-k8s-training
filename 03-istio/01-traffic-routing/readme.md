@@ -29,3 +29,5 @@ kubectl run nginx-v2 --image nj93/istio-test-svc:v2 --dry-run -o yaml --port 80 
 kubectl run busybox --image busybox:1.27 --restart Never -it -- /bin/sh
 
 wget -O- nginx-svc.dialog.svc
+
+VirtualService ---> DestinationRule ---> Service ---> Pods
