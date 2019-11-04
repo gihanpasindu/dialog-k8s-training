@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: nginx-svc
+spec:
+  hosts: # incoming hosts which this should be applied to this service
+  - nginx-svc.dialog.svc.cluster.local
+  http:
+  - route:
+    - destination:
+        host: nginx-svc.dialog.svc.cluster.local # host of the destination rule, should be same as service name
+        subset: v1 # name of destination subset
+      weight: 50  
+    - destination:
+        host: nginx-svc.dialog.svc.cluster.local
+        subset: v2 
+      weight: 50 
+    timeout: 1.000s

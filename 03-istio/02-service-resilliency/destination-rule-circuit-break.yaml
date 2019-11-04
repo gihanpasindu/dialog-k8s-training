@@ -1,0 +1,28 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: nginx-svc
+spec:
+  host: nginx-svc.dialog.svc.cluster.local
+  subsets: ## Pod labels. We group them here
+  - labels:
+      version: v1
+    name: v1
+  - labels:
+      version: v2
+    name: v2
+    trafficPolicy:
+      connectionPool:
+        http:
+          http1MaxPendingRequests: 1
+          maxRequestsPerConnection: 1
+        tcp:
+          maxConnections: 1
+      outlierDetection:
+        baseEjectionTime: 120.000s
+        consecutiveErrors: 1
+        interval: 1.000s
+        maxEjectionPercent: 100
+  trafficPolicy:
+    loadBalancer:
+      simple: RANDOM
