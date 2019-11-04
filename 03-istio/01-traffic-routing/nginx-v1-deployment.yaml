@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nginx
+    version: v1
+  name: nginx-v1
+  namespace: dialog # can hardcode namespace if needed
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+      version: v1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nginx
+        version: v1
+    spec:
+      containers:
+      - image: nj93/istio-test-svc:v1
+        name: nginx-v1
+        ports:
+        - containerPort: 80
+      # readiness probe should be given to start the container with istio-envoy
+        readinessProbe: 
+          httpGet:
+            path: /
+            scheme: HTTP 
+            port: 80
+        resources: {}
+status: {}

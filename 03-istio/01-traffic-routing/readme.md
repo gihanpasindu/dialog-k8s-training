@@ -1,0 +1,16 @@
+### Create a namespace
+It's important you create a namespace with the following label, so that istio can inject it's sidecar proxy to your application
+
+```
+kubectl create ns dialog
+kubectl label namespace dialog  istio-injection=enabled
+
+kubectl get namespace -L istio-injection
+
+```
+
+### Create 2 deployments for nginx v1 and v2
+
+```
+kubectl run nginx-v1 --image nj93/istio-test-svc:v1 --dry-run -o yaml --port 80 --labels 'version=v1,app=nginx' -n dialog > nginx-v1-deployment.yaml
+```

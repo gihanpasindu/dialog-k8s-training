@@ -1,0 +1,71 @@
+apiVersion: v1
+data:
+  fluent.conf: |-
+    <match fluent.**>
+      @type null
+    </match>
+
+    <source>
+      @type tail
+      path /var/log/containers/*.log
+      pos_file /pos/containers.pos
+      time_key time
+      time_format %Y-%m-%dT%H:%M:%S.%NZ
+      tag kubernetes.*
+      format json
+      read_from_head true
+    </source>
+
+    <filter kubernetes.**>
+      @type kubernetes_metadata
+      ca_file /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      bearer_token_file /var/run/secrets/kubernetes.io/serviceaccount/token
+    </filter>
+
+    <filter access>
+      @type record_transformer
+      <record>
+        hostname "#{ENV['NODENAME']}"
+      </record>
+    </filter>
+
+    <filter **>
+    @type record_modifier
+    char_encoding utf-8
+    </filter>
+
+    <match **>
+      @type copy
+      <store>
+        @type gelf
+        include_tag_key true
+        host graylog-udp 
+        port 12201
+        protocol tcp
+        # tls <true or false>
+        # tls_options {}
+        # Supported tls_options:
+        # 'no_default_ca' [Boolean] prevents OpenSSL from using the systems CA store.
+        # 'tls_version' [Symbol] any of :TLSv1, :TLSv1_1, :TLSv1_2 (default)
+        # 'cert' [String, IO] the client certificate file
+        # 'key' [String, IO] the key for the client certificate
+        # 'all_ciphers' [Boolean] allows any ciphers to be used, may be insecure
+        flush_interval 10s
+        num_threads 2
+        use_record_host true
+        buffer_chunk_limit 4096K
+        buffer_queue_limit 512
+        max_retry_wait 300
+      </store>
+    </match>
+
+    # Valid log_level's are: fatal, error, warn, info, debug, trace
+    <system>
+      log_level info
+    </system>
+
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: kube-gelf
+   
